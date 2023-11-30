@@ -1,17 +1,28 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { Link, useParams } from 'react-router-dom';
+
 
 const Comment = () => {
+  const [authToken, setAuthToken] = useState(null);
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState("");
   const [editComment, setEditComment] = useState("");
   const [selectedComment, setSelectedComment] = useState(null);
   const [rating, setRating] = useState(0);
+  const { id } = useParams();
+
 
   useEffect(() => {
+    const Token = getCookie("accessToken");
+    setAuthToken(Token);
     axios
-      .get("http://localhost:4000/message")
+      .get(`http://127.0.0.1:3001/reaction/getcomment/${id}`)
+      //http://127.0.0.1:3001/reaction/getcomment/21
       .then((response) => {
+        console.log(id)
+        console.log(response.data)
+
         setComments(response.data);
       })
       .catch((error) => {
@@ -24,12 +35,17 @@ const Comment = () => {
       const newCommentObj = {
         author: "Your Name",
         date: new Date().toLocaleDateString(),
-        content: newComment,
+        comment: newComment,
         rating: rating,
       };
 
       axios
-        .post("http://localhost:4000/message", newCommentObj)
+        .post(`http://127.0.0.1:3001/reaction/addcomment/${id}`, newCommentObj,{
+          headers: {
+            Authorization: ` ${authToken}`,
+            // Add other headers if needed
+          },
+        })
         .then((response) => {
           setComments([...comments, response.data]);
           setNewComment("");
@@ -41,16 +57,37 @@ const Comment = () => {
     }
   };
 
+  const getCookie = (name) => {
+    let cookieArray = document.cookie.split('; ');
+    for (let cookie of cookieArray) {
+      let [cookieName, cookieValue] = cookie.split('=');
+      if (cookieName === name) {
+        return cookieValue;
+      }
+    }
+    return null;
+  };
+
+
+  const Token = getCookie("accessToken");
+console.log(authToken);
+
   const handleEditComment = (comment) => {
     if (editComment.trim() !== "") {
       const updatedComment = {
         ...comment,
-        content: editComment,
+        newComment: editComment,
         rating: rating,
       };
 
       axios
-        .put(`http://localhost:4000/message/${comment.id}`, updatedComment)
+        .put(`http://127.0.0.1:3001/reaction/updatecomment/${comment.id}`, updatedComment,{
+          headers: {
+            Authorization: ` ${authToken}`,
+            // Add other headers if needed
+          },
+        })
+        //http://127.0.0.1:3001/reaction/updatecomment/6
         .then(() => {
           const updatedComments = comments.map((c) =>
             c.id === comment.id ? updatedComment : c
@@ -66,9 +103,18 @@ const Comment = () => {
     }
   };
 
+  //      .put(`http://127.0.0.1:3001/reaction/deletecomment/${comment.id}?token=${authToken}`)
+
   const handleDeleteComment = (comment) => {
+    console.log(authToken)
     axios
-      .delete(`http://localhost:4000/message/${comment.id}`)
+      .put(`http://127.0.0.1:3001/reaction/deletecomment/${comment.id}`,newComment ,{
+        headers: {
+          Authorization: ` ${authToken}`,
+          // Add other headers if needed
+        },
+      })
+      //http://127.0.0.1:3001/reaction/deletecomment/6
       .then(() => {
         const updatedComments = comments.filter((c) => c.id !== comment.id);
         setComments(updatedComments);
@@ -160,7 +206,8 @@ const Comment = () => {
               key={comment.id}
               className="p-6 text-base bg-white border-t border-gray-200 dark:border-gray-700 dark:bg-gray-900 relative"
             >
-              <div className="relative">
+              <>
+              {authToken &&( <div className="relative">
                 <button
                   onClick={() => handleDropdownToggle(comment)}
                   className="absolute top-1 right-1 text-gray-500 focus:outline-none"
@@ -176,7 +223,9 @@ const Comment = () => {
                   </svg>
                 </button>
                 {selectedComment === comment && renderDropdownMenu(comment)}
-              </div>
+              </div>)}
+              </>
+             
               <p className="text-gray-500 dark:text-gray-400">
                 {selectedComment === comment ? (
                   <div>
@@ -212,9 +261,9 @@ const Comment = () => {
                 ) : (
                   <div>
                     <div className="text-gray-700 font-bold">
-                      Author: {comment.author}
+                      Author: {comment.username}
                     </div>
-                    <div className="text-gray-700">Date: {comment.date}</div>
+                    {/* <div className="text-gray-700">Date: {comment.date}</div> */}
                     <div className="flex items-center space-x-2 mt-2">
                       <span>Rating:</span>
                       {[...Array(comment.rating)].map((_, index) => (
@@ -226,7 +275,7 @@ const Comment = () => {
                         </span>
                       ))}
                     </div>
-                    {comment.content}
+                    {comment.comment}
                   </div>
                 )}
               </p>

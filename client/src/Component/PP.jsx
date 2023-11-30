@@ -2,7 +2,22 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
 
+
+
+const getCookie = (name) => {
+  let cookieArray = document.cookie.split('; ');
+  for (let cookie of cookieArray) {
+    let [cookieName, cookieValue] = cookie.split('=');
+    if (cookieName === name) {
+      return cookieValue;
+    }
+  }
+  return null;
+};
+
 const Profile = () => {
+  const [authToken, setAuthToken] = useState(null);
+
   const [userData, setUserData] = useState({
     id: "", // Replace with the actual user ID
     username: "",
@@ -26,9 +41,17 @@ const Profile = () => {
   };
 
   useEffect(() => {
+    const Token = getCookie("accessToken");
+    setAuthToken(Token);
+    
     const id = Cookies.get("id"); // Replace with the actual user ID
     axios
-      .get(`http://localhost:4000/users/${id}`)
+      .get('http://127.0.0.1:3001/userInfo',{
+        headers: {
+          Authorization: ` ${authToken}`,
+          // Add other headers if needed
+        },
+      })
       .then((response) => {
         console.log("User Data:", response.data);
         setUserData(response.data);
@@ -37,6 +60,9 @@ const Profile = () => {
       .catch((error) => {
         console.error("Error fetching user data from the server:", error);
       });
+
+
+      
 
     // Fetch wishlist data from JSON file
     axios
@@ -59,34 +85,37 @@ const Profile = () => {
     if (!file) {
       return;
     }
+     let formData = new FormData()
+     formData.append("image", file)
 
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = async () => {
-      const base64Image = reader.result;
+    // const reader = new FileReader();
+    // reader.readAsDataURL(file);
+    // reader.onload = async () => {
+    //   const base64Image = reader.result;
 
       try {
         // Update the user data on the JSON server
         const response = await axios.put(
-          `http://localhost:4000/users/${userData.id}`,
-          { ...userData, avatar: base64Image },
+          'http://127.0.0.1:3001/updateuserimage',
+          formData,
           {
             headers: {
-              "Content-Type": "application/json",
+              Authorization: ` ${authToken}`
             },
           }
         );
 
         if (response.status === 200) {
           setUserData(response.data);
-          setPhotoPreview(base64Image);
+          let photoUrl = URL.createObjectURL(file)
+          setPhotoPreview(photoUrl);
         } else {
           console.error("Failed to update avatar.");
         }
       } catch (error) {
         console.error("Error updating avatar:", error);
       }
-    };
+    // };
   };
 
   const handleFormSubmit = async (e) => {
@@ -94,16 +123,14 @@ const Profile = () => {
 
     try {
       const id = Cookies.get("id"); // Replace with the actual user ID
-
+console.log(userData.password);
       const response = await axios.put(
-        `http://localhost:4000/users/${id}`,
-        userData,
-        {
+        'http://127.0.0.1:3001/edituser',userData,{
           headers: {
-            "Content-Type": "application/json",
+            Authorization: ` ${authToken}`
+            // Add other headers if needed
           },
-        }
-      );
+        },);
 
       if (response.status === 200) {
         alert("User data updated successfully!");

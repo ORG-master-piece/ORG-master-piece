@@ -10,10 +10,12 @@ const Categories = () => {
 
   useEffect(() => {
     // Make an Axios GET request to your JSON server endpoint
-    axios.get('http://127.0.0.1:3001/secondpage/getallproducts')
+    axios.get('http://127.0.0.1:3001/secondpage/category/18')
       .then(response => {
         // Set the response data to the state variable
-        setCardsData(response.data.products);
+        console.log(response.data)
+        setCardsData(response.data.product);
+        
       })
       .catch(error => {
         console.error('Error fetching data:', error);
@@ -45,9 +47,9 @@ const Categories = () => {
           <br />
           <br />
           <div className="flex flex-wrap justify-center gap-20">
-            {cardsData.slice(-3).map((card, index) => (
+            {cardsData.map((card, index) => (
               <div key={index} id='lala' className="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-                <img className="rounded-t-lg" src={card.images} alt="" />
+                <img className="rounded-t-lg" src={card.image_url} alt="" />
                 <div className="p-4 text-center">
                   <h5 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
                     {card.name}

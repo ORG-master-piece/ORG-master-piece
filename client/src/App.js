@@ -18,6 +18,7 @@ import Admin from "./Admim/Admin";
 
 
 
+
 function App() {
   return (
     <div className="App">
@@ -33,6 +34,7 @@ function App() {
           <Route path="/ContactUs" element={<ContactUs/>} />
           <Route path="/Categores" element={<Categores/>} />
           <Route path="/Detelis/:id" element={<Detelis/>} />
+
           <Route path="/BookNow" element={<BookNow/>} />
           <Route path="/Detelis1" element={<Detelis1/>} />
           <Route path="/Profile" element={<Profile/>} />

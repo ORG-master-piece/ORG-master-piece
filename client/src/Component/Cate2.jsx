@@ -9,9 +9,9 @@ const Categories = () => {
   const [userFavorites, setUserFavorites] = useState([]);
 
   useEffect(() => {
-    axios.get('http://127.0.0.1:3001/secondpage/getallproducts')
+    axios.get('http://127.0.0.1:3001/secondpage/category/17')
       .then(response => {
-        setCardsData(response.data.products);
+        setCardsData(response.data.product);
       })
       .catch(error => {
         console.error('Error fetching data:', error);
@@ -19,7 +19,7 @@ const Categories = () => {
   }, []);
 
   // Filter cards with IDs 4, 5, and 6
-  const filteredCards = cardsData.filter(card => [5, 6, 7].includes(card.id));
+  // const filteredCards = cardsData.filter(card => [5, 6, 7].includes(card.id));
   const toggleWishlist = (cardId) => {
     if (wishlist.includes(cardId)) {
       setWishlist(wishlist.filter((id) => id !== cardId));
@@ -45,9 +45,9 @@ const Categories = () => {
           <br />
           <br />
           <div className="flex flex-wrap justify-center gap-20">
-            {filteredCards.map((card, index) => (
+            {cardsData.map((card, index) => (
               <div key={index} id='lala' className="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-                <img className="rounded-t-lg" src={card.images} alt="" />
+                <img className="rounded-t-lg" src={card.image_url} alt="" />
                 <div className="p-4 text-center">
                   <h5 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
                     {card.name}

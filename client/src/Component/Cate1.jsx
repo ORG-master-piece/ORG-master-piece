@@ -8,9 +8,9 @@ const Categories = () => {
   const [userFavorites, setUserFavorites] = useState([]);
 
   useEffect(() => {
-    axios.get('http://127.0.0.1:3001/secondpage/getallproducts')
+    axios.get('http://127.0.0.1:3001/secondpage/category/16')
       .then(response => {
-        setCardsData(response.data.products);
+        setCardsData(response.data.product);
       })
       .catch(error => {
         console.error('Error fetching data:', error);
@@ -49,9 +49,9 @@ const Categories = () => {
           assembling Having the most keep.
         </h3>
         <div className="flex flex-wrap justify-center gap-20">
-          {cardsData.slice(0, 3).map((card, index) => (
+          {cardsData.map((card, index) => (
             <div key={index} id='lala' className="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-              <img className="rounded-t-lg" src={card.images} alt="" />
+              <img className="rounded-t-lg" src={card.image_url} alt="" />
               <div className="p-4 text-center">
                 <h5 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
                   {card.name}
@@ -98,7 +98,7 @@ const Categories = () => {
         </div>
       </div>
 
-      <div className="mt-8">
+      {/* <div className="mt-8">
         <h2 className="text-2xl font-bold mb-4">Your Favorites</h2>
         <div className="flex flex-wrap justify-center gap-20">
           {userFavorites.map((favorite, index) => (
@@ -118,7 +118,7 @@ const Categories = () => {
             </div>
           ))}
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };

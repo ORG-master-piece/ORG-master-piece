@@ -16,6 +16,20 @@ const addrate = async (req, res) => {
 
 
 
+const getRates = async (req, res) => {
+  const productId = req.params.id;
+
+  try {
+      const rates = await Reaction.getRates(productId);
+      res.status(200).json({ success: true, rates });
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
+
+
 const addcomment = async (req, res) => {
     const {comment} = req.body;
     const userID = req.user.id
@@ -84,6 +98,7 @@ const getcomments = async (req, res) => {
 
 module.exports = {
     addrate,
+    getRates,
     addcomment,
     getcomments,
     updatecomment,

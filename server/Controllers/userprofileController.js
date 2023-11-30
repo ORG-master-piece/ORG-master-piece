@@ -116,7 +116,7 @@ const userimage = async (req, res) => {
       });
     } catch (err) {
       console.error(err);
-      res.status(400).json({ success: false, error: 'Image update failed' });
+      res.status(401).json({ success: false, error: 'Image update failed' });
     }
   };
   
@@ -165,12 +165,18 @@ async function addtowishlist(req, res){
 
 async function editInformation(req, res){
     try{
+      console.log(req.user.id);
+      const userID = req.user.id;
         const {username, email, phone_number, password} = req.body;
-        const userID = req.user.id;
+        console.log(req.body);
         let newData = validation(username, email, phone_number, password);
+        console.log(newData);
         if (newData){
             const hashPassword = await bcrypt.hash(password, 10);
+            console.log(hashPassword);
+
             const newuser = await userProfileModel.editInfo(userID, username, email, phone_number, hashPassword);
+            console.log(newuser);
             res.status(200).json(newuser);
         }else {
             res.status(400).json("invalid inputs");

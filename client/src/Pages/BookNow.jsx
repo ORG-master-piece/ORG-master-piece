@@ -1,7 +1,7 @@
 import React from "react";
 import Book from "../Component/Book";
 import Button from "../Component/Button";
-import Pyment from "../Component/Pyment ";
+import Payement from "../Component/Payement";
 
 
 
@@ -11,7 +11,7 @@ const Books = () => {
     
 <Book/>
 <Button/>
-<Pyment/>
+<Payement/>
 </>
   );
 };

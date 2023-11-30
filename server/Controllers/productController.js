@@ -1,7 +1,22 @@
 const { func } = require('joi');
 const productModel = require('../Models/productModel');
+var multer  = require('multer');
 
 
+let lastFileSequence = 0;
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'uploads');
+  },
+  filename: (req, file, cb) => {
+    lastFileSequence++;
+    const newFileName = `${Date.now()}_${lastFileSequence}${path.extname(file.originalname)}`;
+    cb(null, newFileName);
+  },
+});
+
+const addImage = multer({ storage: storage });
+const imageProduct = addImage.single('image');
 
 
 async function getallP (req, res){
@@ -17,7 +32,8 @@ async function getallP (req, res){
                 images: JSON.parse(item.image), 
                 price: item.price,
                 counts: item.counts,
-                rate : item.rate
+                rate : item.rate,
+                image_url: `http://localhost:3001/uploads/${JSON.parse(item.image)}`
               };
             })
           };
@@ -42,7 +58,8 @@ async function getproduct(req, res) {
             category: item.category,
             images: JSON.parse(item.image), 
             price: item.price,
-            counts: item.counts
+            counts: item.counts,
+            image_url: `http://localhost:3001/uploads/${JSON.parse(item.image)}`
           };
         })
       };

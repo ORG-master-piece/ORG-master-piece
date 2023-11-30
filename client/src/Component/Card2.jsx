@@ -41,7 +41,7 @@ const Card2 = () => {
               className="grid-rows-3 max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
             >
               
-                <img  className="rounded-t-lg" src={key.image} alt=""/>
+                <img  className="rounded-t-lg" src={key.image_url} alt=""/>
             
               <div className="p-5">
                 

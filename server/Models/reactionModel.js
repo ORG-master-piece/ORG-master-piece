@@ -16,6 +16,19 @@ Reaction.addrate = async (productId, userID, rate) => {
 
 
 
+
+Reaction.getRates = async (productId) => {
+  try {
+      const rates = await db.query('SELECT * FROM reactions WHERE product_id = $1', [productId]);
+      return rates.rows;
+  } catch (error) {
+      console.error(error);
+      throw error;
+  }
+};
+
+
+
 Reaction.addcomment = async(productId, userID, comment) => {
     try{
         // const userID = 38;
@@ -32,7 +45,7 @@ Reaction.addcomment = async(productId, userID, comment) => {
 Reaction.getcomments = async (productId) => {
     try {
       const result = await db.query(`
-        SELECT reactions.comment, users.username
+        SELECT reactions.id, reactions.comment, users.username
         FROM reactions
         INNER JOIN users ON users.id = reactions.user_id
         WHERE reactions.product_id = $1 and reactions.is_deleted=false

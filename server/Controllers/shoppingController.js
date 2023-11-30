@@ -1,5 +1,25 @@
 const Shopping = require('../Models/shoppingModel');
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
+var multer  = require('multer');
+
+
+
+let lastFileSequence = 0;
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'uploads');
+  },
+  filename: (req, file, cb) => {
+    lastFileSequence++;
+    const newFileName = `${Date.now()}_${lastFileSequence}${path.extname(file.originalname)}`;
+    cb(null, newFileName);
+  },
+});
+
+const addImage = multer({ storage: storage });
+const imageProduct = addImage.single('image');
+
+
 
 
 const addtocart = async (req, res) => {
@@ -43,6 +63,7 @@ const getcartproducts = async (req, res, next) => {
             category: item.category,
             images: JSON.parse(item.image), 
             price: item.total_price,
+            image_url: `http://localhost:3001/uploads/${JSON.parse(item.image)}`
           };
         })
       };
@@ -121,7 +142,7 @@ const getcartproducts = async (req, res, next) => {
             payment_method_types: ['card'],
             line_items: lineItems,
             mode: 'payment',
-            success_url: 'http://localhost:3000/success',
+            success_url: 'http://localhost:3000',
             cancel_url: 'http://localhost:3000/cancel',
           });
       
