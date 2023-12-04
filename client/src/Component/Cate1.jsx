@@ -3,11 +3,14 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 
 const Categories = () => {
+  const [authToken, setAuthToken] = useState(null);
   const [cardsData, setCardsData] = useState([]);
   const [wishlist, setWishlist] = useState([]);
   const [userFavorites, setUserFavorites] = useState([]);
 
   useEffect(() => {
+    const Token = getCookie("accessToken");
+    setAuthToken(Token);
     axios.get('http://127.0.0.1:3001/secondpage/category/16')
       .then(response => {
         setCardsData(response.data.product);
@@ -17,11 +20,34 @@ const Categories = () => {
       });
   }, []);
 
+
+  const getCookie = (name) => {
+    let cookieArray = document.cookie.split('; ');
+    for (let cookie of cookieArray) {
+      let [cookieName, cookieValue] = cookie.split('=');
+      if (cookieName === name) {
+        return cookieValue;
+      }
+    }
+    return null;
+  };
+
+
+  const Token = getCookie("accessToken");
+console.log(authToken);
+
+
   const toggleWishlist = async (cardId) => {
     if (wishlist.includes(cardId)) {
       try {
+        //http://127.0.0.1:3001/editwishlist/:id
         // إلغاء إعجاب بالكارد
-        await axios.delete(`http://localhost:4000/wishlist/${cardId}`);
+        await axios.delete(`http://127.0.0.1:3001/editwishlist/${cardId}`,{
+          headers: {
+            Authorization: ` ${authToken}`,
+            // Add other headers if needed
+          },
+        });
         setWishlist(wishlist.filter((id) => id !== cardId));
         setUserFavorites(userFavorites.filter((card) => card.id !== cardId));
       } catch (error) {
@@ -30,7 +56,13 @@ const Categories = () => {
     } else {
       try {
         // إضافة الكارد إلى المفضلة
-        await axios.post(`http://localhost:4000/wishlist`, { cardId });
+        //http://127.0.0.1:3001/addwishlist/:id
+        await axios.post(`http://127.0.0.1:3001/addwishlist/${cardId}`, { cardId },{
+          headers: {
+            Authorization: ` ${authToken}`,
+            // Add other headers if needed
+          },
+        });
         setWishlist([...wishlist, cardId]);
         setUserFavorites([...userFavorites, cardsData.find((card) => card.id === cardId)]);
       } catch (error) {

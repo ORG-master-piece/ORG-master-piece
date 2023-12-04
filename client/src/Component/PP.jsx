@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
+import Wishlist from "../Component/Wishlist";
 
 
 
@@ -25,8 +26,10 @@ const Profile = () => {
     phone_number: "",
     password: "",
     avatar: "",
-    wishlist: [], // Add wishlist property to the initial state
+ // Add wishlist property to the initial state
   });
+  const [wishlist , setWishlist] =useState([])
+  console.log(wishlist)
 
   const [photoPreview, setPhotoPreview] = useState(
     "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
@@ -63,21 +66,33 @@ const Profile = () => {
 
 
       
-
+//http://127.0.0.1:3001/wishlist
     // Fetch wishlist data from JSON file
-    axios
-      .get(`http://localhost:4000/wishlist/${id}`) // Replace with the actual path to your JSON file
-      .then((response) => {
-        console.log("Wishlist Data:", response.data);
-        setUserData((prevUserData) => ({
-          ...prevUserData,
-          wishlist: response.data.wishlist,
-        }));
-      })
-      .catch((error) => {
-        console.error("Error fetching wishlist data from the server:", error);
-      });
-  }, []);
+  //  try{
+  //   const response =  axios.get("http://127.0.0.1:3001/wishlist",{
+  //   headers: {
+  //     Authorization: ` ${authToken}`,
+  //   }
+  //   }) 
+  //   console.log("wishlist",response)
+  // //     setWishlist(response.data)
+
+  // }catch(error){
+  //   console.log(error)
+  // }
+
+  }, [authToken]);
+
+  // .then((response) => {
+  //   console.log("Wishlist Data:", response.data);
+  //   setUserData((prevUserData) => ({
+  //     ...prevUserData,
+  //     wishlist: response.data.wishlist,
+  //   }));
+  // })
+  // .catch((error) => {
+  //   console.error("Error fetching wishlist data from the server:", error);
+  // });
 
   const handleAvatarChange = async (e) => {
     const file = e.target.files[0];
@@ -116,7 +131,7 @@ const Profile = () => {
         console.error("Error updating avatar:", error);
       }
     // };
-  };
+  }
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
@@ -270,7 +285,9 @@ console.log(userData.password);
           </ul>
         ) : (
           <p>No items in the wishlist.</p>
+
         )}
+        <Wishlist/>
       </div>
     </div>
   );

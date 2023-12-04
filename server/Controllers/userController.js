@@ -102,14 +102,14 @@ async function adminLogin(req, res) {
                 res.status(403).json('Access forbidden. User does not have admin privileges.');
               }
             } else {
-              res.status(400).json('Incorrect password');
+              res.status(401).json('Incorrect password');
             }
           })
           .catch((error) => {
-            res.status(400).json(error.detail);
+            res.status(402).json(error.detail);
           });
       } else {
-        res.status(400).json({ error: 'Values are not valid' });
+        res.status(405).json({ error: 'Values are not valid' });
       }
     } catch (error) {
       res.status(500).json('Error in admin login');

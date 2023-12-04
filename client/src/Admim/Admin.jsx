@@ -8,6 +8,7 @@ import Card2 from "../Admim/Card2";
 import Categores from "../Admim/Categores";
 import Card1 from "./Card1";
 import Contact from "./Contact";
+import Submit from "./Submit"
 
 const Admin = () => {
   const [User, setUser] = useState([]);
@@ -19,7 +20,7 @@ const Admin = () => {
   console.log(page); // fetch products
   useEffect(() => {
     axios
-      .get("http://localhost:4000/users")
+      .get("")
       .then((response) => {
         setUser(response.data);
         setPhotoPreview(response.data.profile_image_name);
@@ -87,6 +88,15 @@ const Admin = () => {
           ></svg>
         </button>
         <aside className="flex flex-col w-64 h-auto px-5 py-8 overflow-y-auto bg-white border-r rtl:border-r-0 rtl:border-l dark:bg-gray-900 dark:border-gray-700">
+        <div>
+          <h1 className="text-blue-400">CleanWave</h1>
+          <img
+                  id="imagess"
+                  src="https://s3.envato.com/files/262194812/thumbnail.png"
+                  className="mr-5 h-6 sm:h-9"
+                  alt="logo"
+                />
+          </div>
           <div className="flex flex-col justify-between flex-1 mt-6">
             <nav className="-mx-3 space-y-6 ">
               <div className="space-y-3 ">
@@ -94,49 +104,55 @@ const Admin = () => {
                   Manage Account
                 </label>
                 <button
-                  className="w-full flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700"
+                  className="w-full flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-200 hover:bg-blue-400 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700"
                   onClick={() => setPage("Dashboard")}
                 >
                   <span className="mx-2 text-sm font-medium">Dashboard</span>
                 </button>
 
                 <button
-                  className="w-full flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700"
+                  className="w-full flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-200 hover:bg-blue-400 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700"
                   onClick={() => setPage("Users")}
                 >
                   <span className="mx-2 text-sm font-medium">Users</span>
                 </button>
 
                 <button
-                  className="w-full flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700"
+                  className="w-full flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-200 hover:bg-blue-400 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700"
                   onClick={() => setPage("Categores")}
                 >
-                  <span className="mx-2 text-sm font-medium">Categores</span>
+                  <span className="mx-2 text-sm font-medium">Datelis</span>
                 </button>
                 <button
-                  className="w-full flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700"
+                  className="w-full flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-200 hover:bg-blue-400 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700"
                   onClick={() => setPage("Card1")}
                 >
-                  <span className="mx-2 text-sm font-medium">Card1</span>
+                  <span className="mx-2 text-sm font-medium">Services</span>
                 </button>
 
                 <button
-                  className="w-full flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700"
+                  className="w-full flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-200 hover:bg-blue-400 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700"
                   onClick={() => setPage("Card2")}
                 >
-                  <span className="mx-2 text-sm font-medium">Card2</span>
+                  <span className="mx-2 text-sm font-medium">Meet Our Team</span>
                 </button>
                 <button
-                  className="w-full flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700"
+                  className="w-full flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-200 hover:bg-blue-400 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700"
                   onClick={() => setPage("Contact")}
                 >
-                  <span className="mx-2 text-sm font-medium">Contact</span>
+                  <span className="mx-2 text-sm font-medium">Contact Us</span>
+                </button>
+                <button
+                  className="w-full flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-200 hover:bg-blue-400 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700"
+                  onClick={() => setPage("submit")}
+                >
+                  <span className="mx-2 text-sm font-medium">Bookings</span>
                 </button>
               </div>
 
               <div className="space-y-3 ">
                 <button
-                  className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700"
+                  className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-200 hover:bg-blue-400 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700"
                   onClick={logout}
                 >
                   <svg
@@ -183,6 +199,9 @@ const Admin = () => {
         </div>
         <div className={`${page === "Contact" ? "block" : "hidden"} w-full`}>
           <Contact />
+        </div>
+        <div className={`${page === "submit" ? "block" : "hidden"} w-full`}>
+          <Submit />
         </div>
       </div>
     </div>

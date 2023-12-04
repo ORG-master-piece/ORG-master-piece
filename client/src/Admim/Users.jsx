@@ -3,15 +3,17 @@ import axios from 'axios';
 
 const Users = () => {
   const [users, setUsers] = useState([]);
-
+  // const [addUser, setAdduser] = useState([])
   useEffect(() => {
     fetchData();
   }, []);
 
   const fetchData = async () => {
     try {
-      const response = await axios.get('http://localhost:4000/users');
+      const response = await axios.get('http://127.0.0.1:3001/getallusers?page=2&pageSize=15');
+      console.log(response.data)
       setUsers(response.data);
+
     } catch (error) {
       console.error('Error fetching data:', error);
     }
@@ -31,12 +33,14 @@ const Users = () => {
     try {
       // Sample data for demonstration purposes
       const newUser = {
-        username: 'New User',
-        email: 'newuser@example.com',
-        phone: '123-456-7890',
+        username: '',
+        email: '',
+        phone: '',
+        password: ''
       };
-
-      await axios.post('http://localhost:4000/users', newUser);
+//http://127.0.0.1:3001/registerAdmin
+      await axios.post('http://127.0.0.1:3001/registerAdmin', newUser);
+      // setAdduser(response.data);
       fetchData(); // Refresh the data after adding a new user
     } catch (error) {
       console.error('Error adding user:', error);

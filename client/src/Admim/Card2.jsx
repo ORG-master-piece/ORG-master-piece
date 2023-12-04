@@ -5,7 +5,7 @@ import axios from "axios";
 
 const Card2 = () => {
   const [data, setData] = useState([]);
-  const [newCard, setNewCard] = useState({ name: "", position: "", image: "" });
+  const [newCard, setNewCard] = useState({ name: "", position: "", image_url: "" });
   const [isEditing, setIsEditing] = useState(false);
   const [editingCardId, setEditingCardId] = useState(null);
 
@@ -16,9 +16,9 @@ const Card2 = () => {
 
   const fetchData = () => {
     axios
-      .get("http://localhost:4000/Person")
+      .get("http://127.0.0.1:3001/dashboard/allemployees")
       .then((response) => {
-        setData(response.data);
+        setData(response.data.employees);
       })
       .catch((error) => console.error("Error fetching data: ", error));
   };
@@ -36,9 +36,9 @@ const Card2 = () => {
         .catch((error) => console.error("Error editing card: ", error));
     } else {
       axios
-        .post("http://localhost:4000/Person", newCard)
+        .post("http://127.0.0.1:3001/dashboard/addemployee", newCard)
         .then(() => {
-          setNewCard({ name: "", position: "", image: "" });
+          setNewCard({ name: "", position: "", image_url: "" });
           fetchData();
         })
         .catch((error) => console.error("Error adding card: ", error));
@@ -48,7 +48,7 @@ const Card2 = () => {
   const handleEditCard = (card) => {
     setIsEditing(true);
     setEditingCardId(card.id);
-    setNewCard({ name: card.name, position: card.position, image: card.image });
+    setNewCard({ name: card.name, position: card.position, image_url: card.image });
   };
 
   const handleDeleteCard = (cardId) => {
@@ -74,7 +74,7 @@ const Card2 = () => {
               className="max-w-xs bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
             >
               <a href="#">
-                <img className="w-full rounded-t-lg" src={key.image} alt="" />
+                <img className="w-full rounded-t-lg" src={key.image_url} alt="" />
               </a>
               <div className="p-3">
                 <a href="#">
@@ -118,8 +118,8 @@ const Card2 = () => {
                 <input
                   type="text"
                   placeholder="Image URL"
-                  value={newCard.image}
-                  onChange={(e) => setNewCard({ ...newCard, image: e.target.value })}
+                  value={newCard.image_url}
+                  onChange={(e) => setNewCard({ ...newCard, image_url: e.target.value })}
                 />
                 <button type="button" onClick={handleAddCard}>
                   {isEditing ? 'Edit Card' : 'Add Card'}

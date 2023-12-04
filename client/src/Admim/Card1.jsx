@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 
 const Card1 = () => {
   const [data, setData] = useState([]);
-  const [newCard, setNewCard] = useState({ title: '', description: '', image: '' });
+  const [newCard, setNewCard] = useState({ name: '', image_url: '' });
   const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
@@ -15,26 +15,27 @@ const Card1 = () => {
   }, []);
 
   const fetchData = () => {
-    axios.get('http://localhost:4000/MyData')
+    axios.get('http://127.0.0.1:3001/dashboard/allcategories')
       .then(response => {
-        setData(response.data);
+        setData(response.data.categories);
       })
       .catch(error => console.error('حدث خطأ أثناء جلب البيانات: ', error));
   };
 
   const handleAddCard = () => {
     if (isEditing) {
+      //http://127.0.0.1:3001/dashboard/category/update
       axios.put(`http://localhost:4000/MyData/${newCard.id}`, newCard)
         .then(() => {
           setIsEditing(false);
-          setNewCard({ title: '', description: '', image: '' });
+          setNewCard({ name: '', image_url: '' });
           fetchData();
         })
         .catch(error => console.error('حدث خطأ أثناء تعديل البيانات: ', error));
     } else {
-      axios.post('http://localhost:4000/MyData', newCard)
+      axios.post('http://127.0.0.1:3001/dashboard/addcategory', newCard)
         .then(() => {
-          setNewCard({ title: '', description: '', image: '' });
+          setNewCard({ name: '', image_url: '' });
           fetchData();
         })
         .catch(error => console.error('حدث خطأ أثناء إضافة البيانات: ', error));
@@ -42,7 +43,7 @@ const Card1 = () => {
   };
 
   const handleEditCard = (card) => {
-    setNewCard({ id: card.id, title: card.title, description: card.description, image: card.image });
+    setNewCard({ id: card.id, name: card.name, description: card.description, image: card.image_url });
     setIsEditing(true);
   };
 
@@ -65,14 +66,14 @@ const Card1 = () => {
       wonderful site. At the top is an advertisement for your online cleaning business..
 
       <div id='card'style={{ marginLeft: '280px' }} className="flex flex-wrap gap-4">
-        {data && data.map(key => (
+        {data.map(key => (
           <div key={key.id} data-aos="fade-up" className="max-w-xs">
             <div id='l' className="bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-              <img id='image' className="w-full h-32 object-cover rounded-t-lg" src={key.image} alt="" />
+              <img id='image' className="w-full h-32 object-cover rounded-t-lg" src={key.image_url} alt="" />
               <div className="p-4">
-                <h5 id='text' className="mb-2 text-lg font-bold tracking-tight text-gray-900 dark:text-white">{key.title}</h5>
+                <h5 id='text' className="mb-2 text-lg font-bold tracking-tight text-gray-900 dark:text-white">{key.name}</h5>
 
-                <p id='text' className="mb-2 text-sm font-normal text-gray-700 dark:text-gray-400">{key.description}</p>
+                {/* <p id='text' className="mb-2 text-sm font-normal text-gray-700 dark:text-gray-400">{key.description}</p> */}
                 <div className="flex justify-between">
                   <button className="text-blue-500 hover:underline" onClick={() => handleEditCard(key)}>Edit</button>
                   <button className="text-red-500 hover:underline" onClick={() => handleDeleteCard(key.id)}>Delete</button>
@@ -88,11 +89,11 @@ const Card1 = () => {
     <div className="p-4">
       <h2>{isEditing ? 'Edit Card' : 'Add Card'}</h2>
       <label>Title:</label>
-      <input className="border rounded w-full py-2 px-3" type="text" value={newCard.title} onChange={(e) => setNewCard({ ...newCard, title: e.target.value })} />
-      <label>Description:</label>
-      <input className="border rounded w-full py-2 px-3" type="text" value={newCard.description} onChange={(e) => setNewCard({ ...newCard, description: e.target.value })} />
+      <input className="border rounded w-full py-2 px-3" type="text" value={newCard.name} onChange={(e) => setNewCard({ ...newCard, name: e.target.value })} />
+      {/* <label>Description:</label> */}
+      {/* <input className="border rounded w-full py-2 px-3" type="text" value={newCard.description} onChange={(e) => setNewCard({ ...newCard, description: e.target.value })} /> */}
       <label>Image URL:</label>
-      <input className="border rounded w-full py-2 px-3" type="text" value={newCard.image} onChange={(e) => setNewCard({ ...newCard, image: e.target.value })} />
+      <input className="border rounded w-full py-2 px-3" type="text" value={newCard.image_url} onChange={(e) => setNewCard({ ...newCard, image_url: e.target.value })} />
       <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-2" onClick={handleAddCard}>{isEditing ? 'Edit Card' : 'Add Card'}</button>
     </div>
   </div>

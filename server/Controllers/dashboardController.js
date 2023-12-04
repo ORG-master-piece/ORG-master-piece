@@ -425,12 +425,19 @@ const addEmployee = async (req, res) => {
         
             const modifiedResponse = {
               employees: employees.map(item => {
+                let image = null;
+                try {
+                  image = JSON.parse(item.emp_img);
+                } catch (error) {
+                  console.error(`Error parsing JSON for employee id ${item.id}: ${error}`);
+                }
+        
                 return {
                   id: item.id,
                   name: item.emp_name,
-                  image: JSON.parse(item.emp_img), 
+                  image: image, 
                   position: item.emp_position,
-                  image_url: `http://localhost:3001/uploads/${JSON.parse(item.emp_img)}`
+                  image_url: image ? `http://localhost:3001/uploads/${image}` : null
                 };
               })
             };

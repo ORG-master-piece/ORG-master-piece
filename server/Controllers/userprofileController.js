@@ -151,7 +151,9 @@ async function history(req, res){
 
 async function addtowishlist(req, res){
     try{
-        const userID = 10;
+        // const userID = 10;
+        const userID = req.user.id;
+
         const productID = req.params.id;
         const wishlistmodel = await userProfileModel.addwish(userID,productID);
         res.status(200).json(wishlistmodel);
@@ -191,7 +193,9 @@ async function editInformation(req, res){
 async function editWishlist(req, res){
     try{
         const id = req.params.id;
-        const userID = 10;
+        // const userID = 10;
+        const userID = req.user.id;
+
         const wishlist = await userProfileModel.deleteFromWishlist(id, id);
         res.status(200).json(wishlist);
     } catch(error){

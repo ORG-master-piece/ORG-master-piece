@@ -1,47 +1,74 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const Users = () => {
+const Submit = () => {
   const [users, setUsers] = useState([]);
+  const [authToken, setAuthToken] = useState(null);
+
 
   useEffect(() => {
+    const Token = getCookie("accessToken");
+    setAuthToken(Token);
     fetchData();
   }, []);
+//http://127.0.0.1:3001/getbooking
+const fetchData = async () => {
+  try {
+    const response = await axios.get('http://127.0.0.1:3001/getbooking',{
+      headers: {
+        Authorization: ` ${authToken}`,
+        // Add other headers if needed
+      },
+    });
+    
+    setUsers(response.data);
+    console.log(response.data);
+  } catch (error) {
+    console.error('Error fetching data:', error);
+  }
+};
 
-  const fetchData = async () => {
-    try {
-      const response = await axios.get('http://127.0.0.1:3001/getcontactus');
-      setUsers(response.data);
-    } catch (error) {
-      console.error('Error fetching data:', error);
+
+  const getCookie = (name) => {
+    let cookieArray = document.cookie.split('; ');
+    for (let cookie of cookieArray) {
+      let [cookieName, cookieValue] = cookie.split('=');
+      if (cookieName === name) {
+        return cookieValue;
+      }
     }
+    return null;
   };
 
-  const handleDelete = async (userId) => {
-    try {
-      await axios.put(`http://localhost:4000/Contact/${userId}`);
-      fetchData(); // Refresh the data after deletion
-    } catch (error) {
-      console.error('Error deleting user:', error);
-    }
-  };
 
-  const handleAddUser = async () => {
-    // Implement logic to add a new user
-    try {
-      // Sample data for demonstration purposes
-      const newUser = {
-        username: 'New User',
-        email: 'newuser@example.com',
-        phone: '123-456-7890',
-      };
+  const Token = getCookie("accessToken");
+console.log(authToken);
 
-      await axios.post('http://localhost:4000/Contact', newUser);
-      fetchData(); // Refresh the data after adding a new user
-    } catch (error) {
-      console.error('Error adding user:', error);
-    }
-  };
+//   const handleDelete = async (userId) => {
+//     try {
+//       await axios.put(`http://localhost:4000/submit/${userId}`);
+//       fetchData(); // Refresh the data after deletion
+//     } catch (error) {
+//       console.error('Error deleting user:', error);
+//     }
+//   };
+
+//   const handleAddUser = async () => {
+//     // Implement logic to add a new user
+//     try {
+//       // Sample data for demonstration purposes
+//       const newUser = {
+//         username: 'New User',
+//         email: 'newuser@example.com',
+//         phone: '123-456-7890',
+//       };
+
+//       await axios.post('http://localhost:4000/Contact', newUser);
+//       fetchData(); // Refresh the data after adding a new user
+//     } catch (error) {
+//       console.error('Error adding user:', error);
+//     }
+//   };
 
   const handleEdit = (userId) => {
     // Implement your logic for editing a user
@@ -63,16 +90,13 @@ const Users = () => {
                 ID
               </th>
               <th className="bg-gray-600 p-2 text-white font-bold md:border md:border-grey-500 text-left block md:table-cell">
-              name
+              date
               </th>
               <th className="bg-gray-600 p-2 text-white font-bold md:border md:border-grey-500 text-left block md:table-cell">
-                Email
+              time
               </th>
               <th className="bg-gray-600 p-2 text-white font-bold md:border md:border-grey-500 text-left block md:table-cell">
-              subject
-              </th>
-              <th className="bg-gray-600 p-2 text-white font-bold md:border md:border-grey-500 text-left block md:table-cell">
-              description
+              location
               </th>
               <th className="bg-gray-600 p-2 text-white font-bold md:border md:border-grey-500 text-left block md:table-cell">
                 Actions
@@ -86,31 +110,15 @@ const Users = () => {
                   {user.id}
                 </td>
                 <td className="p-2 md:border md:border-grey-500 text-left block md:table-cell">
-                  {user.user_name}
+                  {user.date}
                 </td>
                 <td className="p-2 md:border md:border-grey-500 text-left block md:table-cell">
-                  {user.user_email}
+                  {user.time}
                 </td>
                 <td className="p-2 md:border md:border-grey-500 text-left block md:table-cell">
-                  {user.subject}
+                  {user.location}
                 </td>
                 <td className="p-2 md:border md:border-grey-500 text-left block md:table-cell">
-                  {user.user_message}
-                </td>
-                <td className="p-2 md:border md:border-grey-500 text-left block md:table-cell">
-                  <button
-                    onClick={() => handleEdit(user.id)}
-                    disabled={!isEditingAllowed()}
-                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 border border-blue-500 rounded"
-                  >
-                    Edit
-                  </button>
-                  <button
-                    onClick={() => handleDelete(user.id)}
-                    className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 border border-red-500 rounded"
-                  >
-                    Delete
-                  </button>
                 </td>
               </tr>
             ))}
@@ -129,4 +137,4 @@ const Users = () => {
   );
 };
 
-export default Users;
+export default Submit;

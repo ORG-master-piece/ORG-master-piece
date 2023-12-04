@@ -9,11 +9,11 @@ const middleware = require("../Middleware/authorization")
 router.get('/userInfo' ,middleware.authorize, userProfileController.information);
 router.post('/adduserimage',middleware.authorize,userProfileController.userimage);
 router.put('/updateuserimage', middleware.authorize, userProfileController.updateUserImage);
-router.get('/wishlist', userProfileController.wishlist);
+router.get('/wishlist',middleware.authorize, userProfileController.wishlist);
 router.get('/history',middleware.authorize, userProfileController.history);
-router.post('/addwishlist/:id', userProfileController.addtowishlist);
+router.post('/addwishlist/:id',middleware.authorize, userProfileController.addtowishlist);
 router.put('/edituser',middleware.authorize, userProfileController.editInformation);
-router.delete('/editwishlist/:id', userProfileController.editWishlist);
+router.delete('/editwishlist/:id',middleware.authorize, userProfileController.editWishlist);
 router.post('/logout', userProfileController.logout);
 
 
