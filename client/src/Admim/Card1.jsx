@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 
 const Card1 = () => {
   const [data, setData] = useState([]);
-  const [newCard, setNewCard] = useState({ name: '', image_url: '' });
+  const [newCard, setNewCard] = useState({ name: '', image: '' });
   const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
@@ -18,6 +18,7 @@ const Card1 = () => {
     axios.get('http://127.0.0.1:3001/dashboard/allcategories')
       .then(response => {
         setData(response.data.categories);
+        console.log(response.data.categories);
       })
       .catch(error => console.error('حدث خطأ أثناء جلب البيانات: ', error));
   };
@@ -25,17 +26,18 @@ const Card1 = () => {
   const handleAddCard = () => {
     if (isEditing) {
       //http://127.0.0.1:3001/dashboard/category/update
-      axios.put(`http://localhost:4000/MyData/${newCard.id}`, newCard)
-        .then(() => {
+      axios.put(`http://127.0.0.1:3001/dashboard/category/update/${newCard.id}`, newCard)
+        .then((response) => {
+          console.log(response)
           setIsEditing(false);
-          setNewCard({ name: '', image_url: '' });
+          setNewCard({ name: '', image: null });
           fetchData();
         })
         .catch(error => console.error('حدث خطأ أثناء تعديل البيانات: ', error));
     } else {
       axios.post('http://127.0.0.1:3001/dashboard/addcategory', newCard)
         .then(() => {
-          setNewCard({ name: '', image_url: '' });
+          setNewCard({ name: '', image: '' });
           fetchData();
         })
         .catch(error => console.error('حدث خطأ أثناء إضافة البيانات: ', error));
@@ -43,12 +45,12 @@ const Card1 = () => {
   };
 
   const handleEditCard = (card) => {
-    setNewCard({ id: card.id, name: card.name, description: card.description, image: card.image_url });
+    setNewCard({ id: card.id, name: card.name, description: card.description, image: card.images });
     setIsEditing(true);
   };
 
   const handleDeleteCard = (id) => {
-    axios.delete(`http://localhost:4000/MyData/${id}`)
+    axios.put(`http://127.0.0.1:3001/dashboard/category/delete/${id}`)
       .then(() => {
         fetchData();
       })
@@ -69,7 +71,7 @@ const Card1 = () => {
         {data.map(key => (
           <div key={key.id} data-aos="fade-up" className="max-w-xs">
             <div id='l' className="bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-              <img id='image' className="w-full h-32 object-cover rounded-t-lg" src={key.image_url} alt="" />
+              <img id='image' className="w-full h-32 object-cover rounded-t-lg" src={key.images} alt="" />
               <div className="p-4">
                 <h5 id='text' className="mb-2 text-lg font-bold tracking-tight text-gray-900 dark:text-white">{key.name}</h5>
 
@@ -93,7 +95,7 @@ const Card1 = () => {
       {/* <label>Description:</label> */}
       {/* <input className="border rounded w-full py-2 px-3" type="text" value={newCard.description} onChange={(e) => setNewCard({ ...newCard, description: e.target.value })} /> */}
       <label>Image URL:</label>
-      <input className="border rounded w-full py-2 px-3" type="text" value={newCard.image_url} onChange={(e) => setNewCard({ ...newCard, image_url: e.target.value })} />
+      <input className="border rounded w-full py-2 px-3" type="text" value={newCard.image} onChange={(e) => setNewCard({ ...newCard, image: e.target.value })} />
       <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-2" onClick={handleAddCard}>{isEditing ? 'Edit Card' : 'Add Card'}</button>
     </div>
   </div>

@@ -44,10 +44,11 @@ const Categories = () => {
           </h3>
           <br />
           <br />
-          <div className="flex flex-wrap justify-center gap-20">
+          <div id='grids' className="grid grid-cols-2 gap-20">
             {cardsData.map((card, index) => (
               <div key={index} id='lala' className="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-                <img className="rounded-t-lg" src={card.image_url} alt="" />
+                <img className="rounded-t-lg" src={card.image_url} alt=""
+                  style={{ width: '400px', height: '250px' }} />
                 <div className="p-4 text-center">
                   <h5 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
                     {card.name}
@@ -99,7 +100,7 @@ const Categories = () => {
         <div className="flex flex-wrap justify-center gap-20">
           {userFavorites.map((favorite, index) => (
             <div key={index} className="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-              <img className="rounded-t-lg" src={favorite.image} alt="" />
+              <img className="rounded-t-lg" src={favorite.image} alt=""                              />
               <div className="p-4 text-center">
                 <h5 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
                   {favorite.title}

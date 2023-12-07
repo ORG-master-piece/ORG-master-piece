@@ -111,7 +111,7 @@ console.log(authToken);
             <img src={booking.image_url} alt={`Image ${index}`} className="mb-4 rounded-md" />
             <p className="text-xl font-semibold mb-2">Name: {booking.name}</p>
             <p className="text-base">Price: {booking.price}</p>
-            <button onClick={() => handleDelete(booking.id, index)} className="mt-4 bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
+            <button onClick={() => handleDelete(booking.id, index)}  class="bn632-hover bn28" id="button">
               Delete
             </button>
           </div>

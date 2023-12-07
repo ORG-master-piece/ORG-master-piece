@@ -34,7 +34,7 @@ const Categories = () => {
 
 
   const Token = getCookie("accessToken");
-console.log(authToken);
+  console.log(authToken);
 
 
   const toggleWishlist = async (cardId) => {
@@ -42,7 +42,7 @@ console.log(authToken);
       try {
         //http://127.0.0.1:3001/editwishlist/:id
         // إلغاء إعجاب بالكارد
-        await axios.delete(`http://127.0.0.1:3001/editwishlist/${cardId}`,{
+        await axios.delete(`http://127.0.0.1:3001/editwishlist/${cardId}`, {
           headers: {
             Authorization: ` ${authToken}`,
             // Add other headers if needed
@@ -57,7 +57,7 @@ console.log(authToken);
       try {
         // إضافة الكارد إلى المفضلة
         //http://127.0.0.1:3001/addwishlist/:id
-        await axios.post(`http://127.0.0.1:3001/addwishlist/${cardId}`, { cardId },{
+        await axios.post(`http://127.0.0.1:3001/addwishlist/${cardId}`, { cardId }, {
           headers: {
             Authorization: ` ${authToken}`,
             // Add other headers if needed
@@ -80,10 +80,15 @@ console.log(authToken);
           <br />
           assembling Having the most keep.
         </h3>
-        <div className="flex flex-wrap justify-center gap-20">
+        <div id='grids' className="grid grid-cols-2 gap-20">
           {cardsData.map((card, index) => (
             <div key={index} id='lala' className="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-              <img className="rounded-t-lg" src={card.image_url} alt="" />
+              <img
+                className="rounded-t-lg"
+                src={card.image_url}
+                alt=""
+                style={{ width: '400px', height: '250px' }} // Set your desired width and height
+              />
               <div className="p-4 text-center">
                 <h5 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
                   {card.name}
@@ -96,9 +101,8 @@ console.log(authToken);
                 </p>
                 <button
                   onClick={() => toggleWishlist(card.id)}
-                  className={`${
-                    wishlist.includes(card.id) ? 'text-red-500' : 'text-blue-500'
-                  } text-2xl focus:outline-none`}
+                  className={`${wishlist.includes(card.id) ? 'text-red-500' : 'text-blue-500'
+                    } text-2xl focus:outline-none`}
                 >
                   &#x2764;
                 </button>
@@ -129,28 +133,6 @@ console.log(authToken);
           ))}
         </div>
       </div>
-
-      {/* <div className="mt-8">
-        <h2 className="text-2xl font-bold mb-4">Your Favorites</h2>
-        <div className="flex flex-wrap justify-center gap-20">
-          {userFavorites.map((favorite, index) => (
-            <div key={index} className="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-              <img className="rounded-t-lg" src={favorite.image} alt="" />
-              <div className="p-4 text-center">
-                <h5 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
-                  {favorite.title}
-                </h5>
-                <p className="text-sm text-gray-700 dark:text-gray-400 mb-4">
-                  {favorite.description}
-                </p>
-                <p className="text-bold text-gray-700 dark:text-gray-400 mb-4">
-                  {favorite.price}
-                </p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div> */}
     </div>
   );
 };

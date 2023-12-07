@@ -7,8 +7,8 @@ function Button() {
   return (
     <div>
         <button
-        className="fixed bottom-10 right-10 p-4 rounded-full bg-blue-500 text-white hover:bg-blue-500 focus:outline-none focus:bg-blue-500"
-        onClick={handleScrollToTop}
+  className="fixed bottom-10 right-10 p-4 rounded-full bg-gradient-to-r from-blue-300 via-blue-500 to-blue-700 text-white hover:from-blue-500 hover:via-blue-600 hover:to-blue-800 focus:outline-none focus:bg-blue-500 transition-all duration-400 ease-in-out"
+  onClick={handleScrollToTop}
       >
         <svg
           className="h-6 w-6"

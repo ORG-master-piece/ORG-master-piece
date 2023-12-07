@@ -41,7 +41,9 @@ const Card2 = () => {
               className="grid-rows-3 max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
             >
               
-                <img  className="rounded-t-lg" src={key.image_url} alt=""/>
+                <img class="rounded-t-lg" src={key.image} alt=""
+                  style={{ width: '400px', height: '250px' }}/>
+                  
             
               <div className="p-5">
                 
@@ -70,11 +72,12 @@ const Card2 = () => {
               .map((_, index) => (
                 <li
                   key={index}
-                  className={`cursor-pointer px-3 py-1 rounded ${
+                  className={`cursor-pointer px-3 py-1 text-white font-semibold ${
                     index + 1 === currentPage
-                      ? "bg-blue-500 text-white"
-                      : "bg-gray-300"
-                  }`}
+                      ? "bg-gradient-to-r from-blue-300 via-blue-500 to-blue-700 hover:from-blue-500 hover:via-blue-600 hover:to-blue-800 focus:outline-none focus:ring focus:border-blue-500"
+                      : "bg-blue-300 hover:bg-blue-400 focus:outline-none focus:ring focus:border-gray-400"
+                  } transition-all duration-700 ease-in-out rounded-full w-130 h-50`}
+                
                   onClick={() => paginate(index + 1)}
                 >
                   {index + 1}

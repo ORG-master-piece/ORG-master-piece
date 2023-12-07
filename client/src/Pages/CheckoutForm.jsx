@@ -70,14 +70,14 @@ const CheckoutForm = (props) => {
   };
 
   return (
-    <div>
+    <div id="add">
       <div className="product-info">
-        <h3 className="product-title">Apple MacBook Pro</h3>
-        <h4 className="product-price">$999</h4>
+        <h3 className="product-title">Pay Now For The Best Service</h3>
+        {/* <h4 className="product-price">$999</h4> */}
       </div>
       <form onSubmit={handleSubmit}>
         <CardSection />
-        <button disabled={!props.stripe} className="btn-pay">
+        <button disabled={!props.stripe} class="bn632-hover bn28" id="button">
           Buy Now
         </button>
       </form>

@@ -65,10 +65,10 @@ Dashboard.createproduct = async (product_name,product_detail,image ,price,counts
 
 
 
-      Dashboard.createCategory = async (category, image /* other category fields */) => {
+      Dashboard.createCategory = async (category, cat_image /* other category fields */) => {
         try {
-          const imageUrlString = JSON.stringify(image);
-          const result = await db.query('INSERT INTO categories (category, cat_image /* other category fields */) VALUES ($1, $2 /* other values */) RETURNING *', [category, imageUrlString /* other values */]);
+          // const imageUrlString = JSON.stringify(image);
+          const result = await db.query('INSERT INTO categories (category, cat_image /* other category fields */) VALUES ($1, $2 /* other values */) RETURNING *', [category, cat_image /* other values */]);
           return result.rows;
         } catch (err) {
           throw err;
@@ -90,10 +90,10 @@ Dashboard.createproduct = async (product_name,product_detail,image ,price,counts
       
 
 
-      Dashboard.updatecategory = async (categoryId, category, image /* other category fields */) => {
+      Dashboard.updatecategory = async (categoryId, category, cat_image /* other category fields */) => {
         try {
-          const imageUrlString = JSON.stringify(image);
-          const result = await db.query('UPDATE categories SET category=$1, cat_image=$2 /* other category fields */ WHERE id=$3', [category, imageUrlString /* other values */, categoryId]);
+          // const imageUrlString = JSON.stringify(image);
+          const result = await db.query('UPDATE categories SET category=$1, cat_image=$2 /* other category fields */ WHERE id=$3', [category, cat_image /* other values */, categoryId]);
           return result.rows;
         } catch (err) {
           throw err;
@@ -197,16 +197,14 @@ Dashboard.createproduct = async (product_name,product_detail,image ,price,counts
 
 
 
-      Dashboard.Users = async  (offset, pageSize) => {
-        try{
-          
-        const result = await db.query('SELECT * FROM users LIMIT $1 OFFSET $2', [offset, pageSize]);
-                return result.rows;
+      Dashboard.Users = async () => {
+        try {
+          const result = await db.query('SELECT * FROM users');
+          return result.rows;
+        } catch (error) {
+          throw error;
         }
-        catch (error) {
-            throw error;
       }
-    }
 
 
 

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Swal from 'sweetalert2';
 import Cookies from 'js-cookie';
 
@@ -9,17 +9,20 @@ const Adminlogin = () => {
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
   const [error, setError] = useState("");
-  
 
-  useEffect(() => {
-    // Check for existing token when the component mounts
-    const existingToken = getCookie("accessToken");
 
-    if (existingToken) {
-      // Token exists, you may choose to redirect to the home page or perform any other action
-      window.location.href = "/Admin";
-    }
-  }, []);
+  const navigate = useNavigate();
+
+  // useEffect(() => {
+  //   // Check for existing token when the component mounts
+  //   const existingToken = Cookies.get("accessToken");
+
+
+  //   if (existingToken) {
+  //     // Token exists, you may choose to redirect to the home page or perform any other action
+  //     navigate('/')
+  //   }
+  // }, []);
 
   // const getCookie = (name) => {
   //   const value = `; ${document.cookie}`;
@@ -27,91 +30,100 @@ const Adminlogin = () => {
   //   if (parts.length === 2) return parts.pop().split(";").shift();
   // };
 
-  const getCookie = (name, value) => {
-    const cookieValue = encodeURIComponent(name) + '=' + encodeURIComponent(value) + '; expires=' + '; path=/';
-    document.cookie = cookieValue;
-  };
+  // const getCookie = (name, value) => {
+  //   const cookieValue = encodeURIComponent(name) + '=' + encodeURIComponent(value) + '; expires=' + '; path=/';
+  //   document.cookie = cookieValue;
+  // };
 
   const handleLogin = async (e) => {
     e.preventDefault(); // Prevent the default form submission
 
+
+    // Basic validation
+    if (!email || !password || !confirm) {
+      setError("All fields are required");
+      return;
+    }
+
+    if (!email.includes("@")) {
+      setError("Invalid email address");
+      return;
+    }
+
+    if (password !== confirm) {
+      setError("Password and Confirm Password do not match");
+      return;
+    }
+    //     const data = {
+    //       email: email,
+    //       password: password
+    //     };
+    //     const url = "http://127.0.0.1:3001/login"
+    //     axios.post(url, data)
+    // .then(response => {
+    //   console.log('Response:', response.data);
+    // })
+    // .catch(error => {
+    //   console.error('Error:', error);
+    // });
+    // Password strength validation
+    const passwordRegex =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/;
+    if (!password.match(passwordRegex)) {
+      setError(
+        "Password must contain at least 8 characters, including one uppercase letter, one lowercase letter, one digit, and one special character."
+      );
+      return;
+    }
+
+    // Clear any previous error
+    setError("");
+
+
     try {
-      // Basic validation
-      if (!email || !password || !confirm) {
-        setError("All fields are required");
-        return;
-      }
-
-      if (!email.includes("@")) {
-        setError("Invalid email address");
-        return;
-      }
-
-      if (password !== confirm) {
-        setError("Password and Confirm Password do not match");
-        return;
-      }
-  //     const data = {
-  //       email: email,
-  //       password: password
-  //     };
-  //     const url = "http://127.0.0.1:3001/login"
-  //     axios.post(url, data)
-  // .then(response => {
-  //   console.log('Response:', response.data);
-  // })
-  // .catch(error => {
-  //   console.error('Error:', error);
-  // });
-      // Password strength validation
-      const passwordRegex =
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/;
-      if (!password.match(passwordRegex)) {
-        setError(
-          "Password must contain at least 8 characters, including one uppercase letter, one lowercase letter, one digit, and one special character."
-        );
-        return;
-      }
-
-      // Clear any previous error
-      setError("");
-      const response = await axios.post(`http://127.0.0.1:3001/login`,{
+      const response = await axios.post(`http://127.0.0.1:3001/adminlogin`, {
         email: email,
         password: password
       });
-      Cookies.set("accessToken",response.data.accessToken)
-      console.log("Server Response:", response);
-      if(response.status == 200){
-        if(response.data.value.id== undefined){
-          throw new Error("Cheack");
+      Cookies.set("accessToken", response.data)
+      console.log("Server Response:", response.data);
+
+
+      if (response.status == 200) {
+        // if(response.data.value.id== undefined){
+        //   throw new Error("Cheack");
+        // }
+        // console.log(response.data.value.id)
+        // console.log("I am here ",response.data[0].id);
+
+
+        console.log(response.data)
+        // Use SweetAlert2 directly without creating a separate instance
+        const result = await Swal.fire({
+          icon: 'success',
+          title: 'Successfully logged in',
+          text: `Welcome ${response.data}`,
+          showConfirmButton: true,
+          // timer: 5000, // Set a timer for 5 seconds (adjust as needed)
+          // confirmButtonText: 'OK',
+        });
+
+
+        if (result.isConfirmed) {
+          
+
+          // Redirect to the home page or perform any other action
+          navigate('/Admin')
+
         }
-        console.log(response.data.value.id)
-      // console.log("I am here ",response.data[0].id);
-      
-
-      console.log(response.data.value.accessToken)
-      // Use SweetAlert2 directly without creating a separate instance
-      const result = await Swal.fire({
-        icon: 'success',
-        title: 'Successfully logged in',
-        text: `Welcome ${response.data}`,
-        showConfirmButton: true,
-        // timer: 5000, // Set a timer for 5 seconds (adjust as needed)
-        // confirmButtonText: 'OK',
-      });
-
-      if (result.isConfirmed) {
-        // Redirect to the home page or perform any other action
-        window.location.href = "/Admin";
       }
-    }else{
+    } catch (error) {
       throw new Error("osama");
+
     }
 
-    } catch (error) {
-      
-      alert("An error occurred while logging in: " + error.message);
-    }
+
+
   };
 
   return (

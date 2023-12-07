@@ -35,7 +35,7 @@ const Hero = () => {
         <div>
           <div className="hero-slide" style={{ backgroundImage: 'url("https://www.stonemountainadventures.com/wp-content/uploads/2022/10/cleaning-experts-essentials-buys-1657632352.jpg")' }}>
             <div className="hero-text">
-              <h1>Welcome to Hourly Cleaning CleanWave Website</h1>
+              <h1 id='Res'>Welcome to Hourly Cleaning CleanWave Website</h1>
               <p>Discover amazing features and services that await you.</p>
               <Link to ="/BookNow">
                 <button className="bn632-hover bn28" id="button">Book Now</button>
@@ -46,7 +46,7 @@ const Hero = () => {
         <div>
           <div className="hero-slide" style={{ backgroundImage: 'url("https://pennstatehealthnews.org/wp-content/uploads/2019/05/050119-spring-clean.jpg")' }}>
             <div className="hero-text">
-              <h1>Welcome to One Visit CleanWave Website</h1>
+              <h1 id='Res'>Welcome to One Visit CleanWave Website</h1>
               <p>Discover amazing features and services that await you.</p>
               <Link to ="/BookNow">
                 <button className="bn632-hover bn28" id="button">Book Now</button>
@@ -57,7 +57,7 @@ const Hero = () => {
         <div>
           <div className="hero-slide" style={{ backgroundImage: 'url("https://www.saharacleaningservices.com/wp-content/uploads/slider/cache/9144cfbcd50d03b57fc3e8604d0b4297/person-taking-care-office-cleaning.jpg")' }}>
             <div className="hero-text">
-              <h1>Welcome to Holiday package CleanWave Website</h1>
+              <h1 id='Res'>Welcome to Holiday package CleanWave Website</h1>
               <p>Discover amazing features and services that await you.</p>
               <Link to ="/BookNow">
                 < button className="bn632-hover bn28" id="button" >Book Now </button>
@@ -73,9 +73,3 @@ const Hero = () => {
 
 
 export default Hero;
-
-
-
-
-
-

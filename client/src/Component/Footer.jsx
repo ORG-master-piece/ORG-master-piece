@@ -6,10 +6,10 @@ const Footer = () => {
     <div>
       <>
         {/* component */}
-        <footer className="bg-gradient-to-r from-gray-100 via-[#bce1ff] to-gray-100">
+        <footer id="Foooter" className="bg-gradient-to-r from-gray-100 via-[#bce1ff] to-gray-100">
           <div className="max-w-screen-xl px-4 py-6 mx-auto sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
-              <div>
+              <div id="OO">
                 <div>
                   <span
                     id="Clean"
@@ -87,10 +87,10 @@ const Footer = () => {
                   </a>
                 </div>
               </div>
-              <div className="flex flex-wrap justify-end items-end gap-8 lg:col-span-2 sm:flex-row lg:flex-col lg:grid-cols-4">
+              <div id="iss" className="flex flex-wrap justify-end items-end gap-8 lg:col-span-2 sm:flex-row lg:flex-col lg:grid-cols-4">
                 
                 <div>
-                  <nav className="flex flex-col mt-4 space-y-2 text-l text-blue-700">
+                  <nav  className="flex flex-col mt-4 space-y-2 text-l text-blue-700">
                     <Link className="hover:opacity-75" to="/AboutUs">
                       {" "}
                       About{" "}

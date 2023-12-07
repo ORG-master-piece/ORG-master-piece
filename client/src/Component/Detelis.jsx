@@ -116,7 +116,7 @@ console.log(authToken);
            {product.details}
             </p>
             <p id='priceee' className="inline-block mb-8 text-4xl font-bold text-gray-700 dark:text-gray-400">
-              <span>{product.price}</span>
+              <span id='LO'>{product.price}</span>
             
             </p>
           </div>
@@ -128,7 +128,8 @@ console.log(authToken);
              <Link to="/BookNow">
               
              < button onClick={handleBookNow}
-              className="flex items-center justify-center w-full p-4 text-blue-500 border border-blue-500 rounded-md dark:text-gray-200 dark:border-blue-600 hover:bg-blue-600 hover:border-blue-600 hover:text-gray-100 dark:bg-blue-600 dark:hover:bg-blue-700 dark:hover:border-blue-700 dark:hover:text-gray-300">
+            
+            class="bn632-hover bn28" id="button">
               
                 Book Now
               </button>

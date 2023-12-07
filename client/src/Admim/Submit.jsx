@@ -10,7 +10,7 @@ const Submit = () => {
     const Token = getCookie("accessToken");
     setAuthToken(Token);
     fetchData();
-  }, []);
+  }, [authToken]);
 //http://127.0.0.1:3001/getbooking
 const fetchData = async () => {
   try {

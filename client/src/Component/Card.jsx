@@ -25,12 +25,13 @@ const Card = () => {
     Keep Your Home Clean Now..
    </h1></div><br></br>wonderful site. At the top is an advertisement for your online cleaning business..
     
-      <div id='card'>
+      <div id='card' className='flex flex-wrap'>
         { data.map(keys => (
-          <div key={keys.id} data-aos="fade-up" className="flex space-x-4">
+          <div key={keys.id} data-aos="fade-up" className="flex flex-col w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/4 p-2">
             
             <div id='l' className="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-            <img id='image' className="rounded-t-lg" src={keys.image_url} alt="" />
+            <img id='image' className="rounded-t-lg" src={keys.images} alt="" 
+            />
             <h5 id='text' className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{keys.name}</h5>
                 
               <div className="p-5">

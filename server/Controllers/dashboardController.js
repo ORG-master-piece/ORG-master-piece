@@ -6,6 +6,7 @@ const bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const Joi = require('joi');
+const { error } = require('console');
 require('dotenv').config();
 
 
@@ -210,10 +211,11 @@ const createproduct = async (req, res) => {
             //     return res.status(400).json({ success: false, error: err.message });
             //   }
               
-              const { category, /* other category fields */ } = req.body;
-              // const image = req.file ? req.file.filename : null;
-              
-              await Dashboard.createCategory(category, image /* other category fields */);
+              // const { name,image /* other category fields */ } = req.body;
+              //  const image = req.file ? req.file.filename : null;
+              category =req.body.name
+              cat_image=req.body.image
+              await Dashboard.createCategory(category, cat_image /* other category fields */);
           
               res.status(201).json({ success: true, message: 'Category added successfully' });
             // });
@@ -252,29 +254,32 @@ const createproduct = async (req, res) => {
 
         const updatecategory = async (req, res, next) => {
           try {
-            upload(req, res, async function (err) {
-              if (err) {
-                return res.status(400).json({ success: false, error: err.message });
-              }
-              
-              try {
-                const { category } = req.body;
-                const image = req.file ? req.file.filename : null;
-                const categoryId = req.params.id;
-                
-                await Dashboard.updatecategory(categoryId, category, image /* other category fields */);
-                
-                res.status(200).json({ success: true, message: 'Category updated successfully' });
-              } catch (err) {
-                console.error(err);
-                res.status(500).json({ success: false, error: 'Error updating category' });
-              }
-            });
+            // upload(req, res, async function (err) {
+            //   if (err) {
+            //     return res.status(400).json({ success: false, error: err.message });
+            //   }
+            // });
+        
+            // const { category, image } = req.body;
+            
+            const category =req.body.name
+            console.log(req.body);
+            const cat_image =req.body.image
+            // const image = req.file ? req.file.filename : null;
+            const categoryId = req.params.id;
+        
+            await Dashboard.updatecategory(categoryId, category, cat_image /* other category fields */);
+        
+            res.status(200).json({ success: true, message: 'Category updated successfully' });
           } catch (err) {
             console.error(err);
-            res.status(400).json({ success: false, error: 'Category update failed' });
+            res.status(500).json({ success: false, error: 'Error updating category' });
           }
         };
+        
+        // Additional catch block for outer try block
+       
+      
         
 
 
@@ -300,9 +305,9 @@ const createproduct = async (req, res) => {
                 return {
                   id: item.id,
                   name: item.category,
-                  images: JSON.parse(item.cat_image), // Assuming cat_image is a JSON string containing image filenames
+                  images: item.cat_image, // Assuming cat_image is a JSON string containing image filenames
                   // Add other category details here if needed
-                  image_url: `http://localhost:3001/uploads/${JSON.parse(item.cat_image)}`
+                  image_url: `http://localhost:3001/uploads/${item.cat_image}`
                 };
               })
             };
@@ -319,13 +324,16 @@ const createproduct = async (req, res) => {
 
 const addEmployee = async (req, res) => {
   try {
+    console.log("issa")
     // upload(req, res, async function (err) {
     //   if (err) {
     //     return res.status(400).json({ success: false, error: err.message });
     //   }
 
-      const { emp_name, emp_position } = req.body;
+      const { emp_name,image, emp_position } = req.body;
+      console.log(req.body)
       // const image = req.file ? req.file.filename : null;
+      console.log("first", emp_name)
 
       await Dashboard.addEmployee(emp_name, image, emp_position);
 
@@ -369,17 +377,14 @@ const addEmployee = async (req, res) => {
 
 
         const updateEmployee = async (req, res, next) => {
-          try {
-            upload(req, res, async function (err) {
-              if (err) {
-                return res.status(400).json({ success: false, error: err.message });
-              }
+       
         
               try {
                 const employeeId = req.params.id;
-                const { emp_name, emp_position } = req.body;
-                const image = req.file ? req.file.filename : null;
-        
+                // const image = req.file ?  req.file.filename : null;
+
+                const { emp_name, emp_position,image } = req.body;
+        console.log("kkkkkkkkkkkkkkkkk",req.body)
                 await Dashboard.updateEmployee(employeeId, emp_name, image, emp_position);
         
                 res.status(200).json({ success: true, message: 'Employee updated successfully' });
@@ -387,11 +392,8 @@ const addEmployee = async (req, res) => {
                 console.error(err);
                 res.status(500).json({ success: false, error: 'Error updating employee' });
               }
-            });
-          } catch (err) {
-            console.error(err);
-            res.status(400).json({ success: false, error: 'Employee update failed' });
-          }
+            
+       
         };
         
 
@@ -456,12 +458,7 @@ const addEmployee = async (req, res) => {
 
 async function getallusers(req, res) {
   try {
-    const page = parseInt(req.query.page, 10) || 1;
-      const pageSize = parseInt(req.query.pageSize, 10) || 10;
-
-      // Calculate the offset based on page and pageSize
-      const offset = (page - 1) * pageSize;
-    const users = await Dashboard.Users(offset, pageSize);
+    const users = await Dashboard.Users();
     res.status(200).json(users);
   } catch (error) {
     console.error(error);
